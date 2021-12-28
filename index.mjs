@@ -11,7 +11,7 @@ const convertAndSave = async (path, name) => {
         .resize({ width: Math.floor(width / 1.75) })
         .jpeg({
             mozjpeg: true,
-            quality: 92,
+            quality: 90,
         })
         .toFile(`${path}r_${name}`)
 }
@@ -35,6 +35,9 @@ const handleAllRecursive = async (path) => {
         }))
 
     return Promise.all(files.map(async ({ path, name, isImage, isDirectory }) => {
+        if (name.startsWith('r_')) {
+            return;
+        }
         const fullPath = path + name
         if (isImage) {
             await convertAndSave(path, name)
